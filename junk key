@@ -1,0 +1,42 @@
+// ==UserScript==
+// @name         Junk Hotkey
+// @version      1.13.4
+// @description  mousetrap keybinds for card page
+// @author       OG base code by: dithpri Moded far beyound what it once was by 9003
+// @noframes
+// @match        https://www.nationstates.net/page=deck
+// @require      https://craig.global.ssl.fastly.net/js/mousetrap/mousetrap.min.js?a4098
+// @grant        window.close
+//
+// @grant         GM_getValue
+// @grant         GM_setValue
+// @grant         GM_log
+// @require       https://openuserjs.org/src/libs/sizzle/GM_config.min.js
+// ==/UserScript==
+
+(function () {
+  "use strict";
+
+  function noinput_mousetrap(event) {
+    if (event.target.classList.contains("mousetrap")) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+     var skip = 0;
+  Mousetrap.bind(['enter'], function (ev) {
+      let elem = document.querySelectorAll(
+        'a.deckcard-junk-button[data-rarity="common"],a.deckcard-junk-button[data-rarity="uncommon"], a.deckcard-junk-button[data-rarity="rare"], a.deckcard-junk-button[data-rarity="ultra-rare"],a.deckcard-junk-button[data-rarity="epic"]'
+      )[skip];
+      if (elem) {
+        elem.click();
+        elem.classList.remove("deckcard-junk-button");
+        elem.classList.add("disabled");
+      } else {
+        window.close();
+      }
+    }
+  );
+
+})();
